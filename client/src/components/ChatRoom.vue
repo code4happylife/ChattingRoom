@@ -24,9 +24,9 @@
             ></el-input>
             <el-row :gutter="20" type="flex" justify="end" align="middle" style="padding: 10px;">
                 <el-button type="primary" size="medium" @click="send()" v-if="nickname !== ''">发送/Send</el-button>
-                // 绑定事件， 点击 退出聊天，则调用send()函数
+                <!-- 绑定事件， 点击 退出聊天，则调用send()函数 -->
                 <el-button type="primary" size="medium" @click="disconnect()" v-if="nickname !== ''">退出聊天/Quit Chat</el-button>
-                // 绑定事件，点击 加入聊天，则调用join()函数
+                <!-- 绑定事件，点击 加入聊天，则调用join()函数 -->
                 <el-button type="primary" size="medium" @click="join()" v-if="nickname === ''">加入聊天/Join Chat</el-button>
             </el-row>
         </el-footer>
