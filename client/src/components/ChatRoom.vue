@@ -1,6 +1,6 @@
 <template>
     <el-container style="height: 100%;">
-        <el-header height="120px" style="background-color: peachpuff; display: grid">
+        <el-header height="120px" style="background-color: #20B2AA; display: grid">
             <el-row :gutter="20" type="flex" justify="space-around" align="middle">
                 <el-col :span="6" :offset="0" style="font-size: xx-large;">Chatting Room</el-col>
                 <el-col :span="6" :offset="12" style="font-size: xx-large">Nickname：{{ nickname }}</el-col>
@@ -24,7 +24,9 @@
             ></el-input>
             <el-row :gutter="20" type="flex" justify="end" align="middle" style="padding: 10px;">
                 <el-button type="primary" size="medium" @click="send()" v-if="nickname !== ''">发送/Send</el-button>
+                // 绑定事件， 点击 退出聊天，则调用send()函数
                 <el-button type="primary" size="medium" @click="disconnect()" v-if="nickname !== ''">退出聊天/Quit Chat</el-button>
+                // 绑定事件，点击 加入聊天，则调用join()函数
                 <el-button type="primary" size="medium" @click="join()" v-if="nickname === ''">加入聊天/Join Chat</el-button>
             </el-row>
         </el-footer>
@@ -47,26 +49,27 @@
         },
         methods: {
             send() {
-                let info = this.nickname + '：' + this.message + '\n';
+                let info = this.nickname + ':' + this.message + '\n';
                 let data = {
                     user: this.nickname,
                     message: this.message
                 };
+                //console.log(JSON.stringify({ x: 5, y: 6 }));
                 this.socket.send(JSON.stringify(data));
                 this.messages += info;
                 this.message = '';
             },
             join() {
                 this.$prompt('请输入昵称', '提示', {
-                    confirmButtonText: '确定',
-                    inputPlaceholder: '请输入昵称',
-                    inputErrorMessage: '昵称不能为空',
+                    confirmButtonText: '确定/Confirm',
+                    inputPlaceholder: '请输入昵称/Please input nickname',
+                    inputErrorMessage: '昵称不能为空/Nickname should not be empty',
                     inputValidator: function ($event) {
                     return $event.length > 0
                     }
                 }).then(({ value }) => {
                     this.nickname = value;
-                //    发起 websocket 连接
+                // 发起 websocket 连接
                     this.createWebSocket();
                 }).catch(() => {
                     console.log('取消输入')
@@ -87,10 +90,24 @@
                 }
             },
             createWebSocket() {
+            /**
+            // Create WebSocket connection.
+            const socket = new WebSocket('ws://localhost:8080');
+
+            // Connection opened
+            socket.addEventListener('open', function (event) {
+                socket.send('Hello Server!');
+            });
+
+            // Listen for messages
+            socket.addEventListener('message', function (event) {
+                console.log('Message from server ', event.data);
+            });
+
+            **/
                 if (this.socket === null) {
                     this.socket = new WebSocket(base_url)
                 }
-
                 this.socket.onopen = (event) => {
                     console.log(event);
                     console.log('connected');

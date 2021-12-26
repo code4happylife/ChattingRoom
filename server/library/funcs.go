@@ -22,7 +22,7 @@ func init() {
 			return true
 		},
 	}
-
+	// 创建多个websocket 客户端
 	Clients = make(map[*websocket.Conn]string)
 	Broadcast = make(chan structure.Message)
 }
